@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>League Newsletter Sign-Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --ink: #1c1f26;
+    --muted: #6b7280;
+    --line: #e2e5ea;
+    --navy: #1f2a44;
+    --navy-ink: #ffffff;
+    --accent-soft: #e8ecf4;
+    --error: #b42318;
+    --ok: #1e7a3a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1218;
+      --card: #171b23;
+      --ink: #e8eaef;
+      --muted: #9aa1ad;
+      --line: #2a303b;
+      --navy: #8fa3d1;
+      --navy-ink: #0f1218;
+      --accent-soft: #1f2633;
+      --error: #f97066;
+      --ok: #5dc583;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.5 "Barlow", "Helvetica Neue", Arial, sans-serif;
+  }
+  h1, h2, .step, button, .plan b, .league .name {
+    font-family: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 40px 16px 64px; }
+  header h1 {
+    font-size: 44px; line-height: 1.0; margin: 0 0 12px;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.005em;
+  }
+  header p { color: var(--muted); margin: 0 0 28px; font-size: 18px; }
+  .banner {
+    background: var(--accent-soft); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 18px; font-size: 14px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .step { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+  h2 { font-size: 26px; font-weight: 700; text-transform: uppercase; line-height: 1.1; margin: 0 0 14px; }
+  button { font-size: 18px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .plan b { font-size: 19px; text-transform: uppercase; letter-spacing: 0.02em; }
+  .league .name { font-size: 19px; font-weight: 700; }
+  label { display: block; font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  .hint { font-size: 13px; color: var(--muted); font-weight: 400; margin-top: 4px; }
+  input[type=text], input[type=email], select {
+    width: 100%;
+    padding: 11px 12px;
+    font: inherit;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  input:focus, select:focus, button:focus-visible { outline: 2px solid var(--navy); outline-offset: 1px; }
+  .row { display: flex; gap: 10px; }
+  .row input { flex: 1; }
+  button {
+    font-family: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 11px 18px;
+    border-radius: 8px;
+    border: 0;
+    background: var(--navy);
+    color: var(--navy-ink);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button:disabled { opacity: 0.55; cursor: default; }
+  button.ghost { background: transparent; color: var(--navy); border: 1px solid var(--line); }
+  .msg { font-size: 14px; margin-top: 10px; min-height: 1em; }
+  .msg.error { color: var(--error); }
+  .msg.ok { color: var(--ok); }
+  .leagues { display: grid; gap: 10px; margin-top: 6px; }
+  .league {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; border-radius: 8px; margin: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    font-weight: 400; cursor: pointer;
+  }
+  .league:hover { border-color: var(--navy); }
+  .league:has(input:checked) { border: 2px solid var(--navy); background: var(--accent-soft); padding: 11px; }
+  .league input { width: 18px; height: 18px; flex: 0 0 18px; accent-color: var(--navy); }
+  .league img, .league .ph {
+    width: 44px; height: 44px; border-radius: 8px; flex: 0 0 44px; object-fit: cover;
+    background: var(--accent-soft);
+  }
+  .league .ph { display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--muted); }
+  .league .meta { font-size: 13px; color: var(--muted); }
+  .plans { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .plan {
+    border: 1px solid var(--line); border-radius: 8px; padding: 12px; cursor: pointer; display: block; margin: 0;
+    font-weight: 400;
+  }
+  .plan input { margin-right: 6px; accent-color: var(--navy); }
+  .plan .hint { margin-top: 6px; }
+  .plan:has(input:checked) { border: 2px solid var(--navy); background: var(--accent-soft); padding: 11px; }
+  .rule { margin-top: 10px; }
+  .rule .lname { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .hidden { display: none; }
+  .done { padding: 28px 22px; }
+  .done h2 { margin-bottom: 8px; }
+  .share { display: flex; gap: 10px; margin-top: 10px; }
+  .share input { flex: 1; font-size: 14px; }
+  footer { font-size: 12px; color: var(--muted); text-align: center; margin-top: 28px; }
+  @media (max-width: 560px) {
+    .row, .share { flex-direction: column; }
+    .plans { grid-template-columns: 1fr; }
+    header h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>A weekly stats newsletter for your Sleeper league</h1>
+    <p>Power rankings, a full scoreboard, projected lines for every matchup, playoff odds, and more, in your inbox every Tuesday.</p>
+  </header>
+
+  <div class="banner hidden" id="inviteBanner">
+    Your league has a league plan, so premium is included for you. Find your league below and add your email.
+  </div>
+
+  <!-- Step 1 -->
+  <section class="card" id="step1">
+    <div class="step">Step 1</div>
+    <h2>Find your leagues</h2>
+    <label for="username">Your Sleeper username</label>
+    <div class="row">
+      <input type="text" id="username" placeholder="e.g. njdruehl" autocomplete="off" autocapitalize="none" spellcheck="false">
+      <button id="findBtn">Find leagues</button>
+    </div>
+    <div class="msg" id="findMsg"></div>
+    <div class="leagues" id="leagueList"></div>
+    <div style="margin-top:14px;" class="hidden" id="nextWrap">
+      <button id="nextBtn">Continue</button>
+    </div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="card hidden" id="step2">
+    <div class="step">Step 2</div>
+    <h2>Your details</h2>
+
+    <label for="contactName">Name</label>
+    <input type="text" id="contactName" autocomplete="name">
+
+    <label for="contactEmail">Email</label>
+    <input type="email" id="contactEmail" autocomplete="email">
+
+    <label for="confirmEmail">Confirm email</label>
+    <input type="email" id="confirmEmail" autocomplete="off">
+
+    <div id="planBlock">
+      <label>Plan</label>
+      <div class="plans">
+        <label class="plan"><input type="radio" name="plan" value="free"><b>Free</b>
+          <div class="hint">Power rankings, scoreboard, projected lines, and bye weeks.</div></label>
+        <label class="plan"><input type="radio" name="plan" value="premium" checked><b>Premium</b>
+          <div class="hint">Adds win probabilities, rating trends, head-to-head stats, injuries, and playoff odds.</div></label>
+        <label class="plan"><input type="radio" name="plan" value="league"><b>League plan</b>
+          <div class="hint">For commissioners. Premium for everyone in your league, at a discount.</div></label>
+      </div>
+      <div class="hint" style="margin-top:8px;">Everything is free during the beta.</div>
+    </div>
+
+    <div id="betaNote" class="banner hidden" style="margin:18px 0 0;">
+      <b>Free during the beta.</b> Premium features included.
+    </div>
+
+    <div id="rulesBlock" class="hidden">
+      <label>How does each dynasty league decide the 1.01?</label>
+      <div id="rulesList"></div>
+    </div>
+
+    <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button id="submitBtn">Sign up</button>
+      <button class="ghost" id="backBtn">Back</button>
+    </div>
+    <div class="msg" id="submitMsg"></div>
+  </section>
+
+  <!-- Done -->
+  <section class="card done hidden" id="doneCard">
+    <h2>You're signed up</h2>
+    <p id="doneText"></p>
+    <div id="shareBlock" class="hidden">
+      <p style="margin-bottom:4px;" id="shareIntro"><b>Send this link to your league.</b> Everyone who signs up through it gets premium.</p>
+      <div id="shareLinks"></div>
+    </div>
+  </section>
+
+  <footer>Not affiliated with Sleeper. League data comes from Sleeper's public API.</footer>
+</div>
+
+<script>
+  // Paste your Google Apps Script web app URL here. Leave blank to test without saving.
+  const SUBMIT_URL = "";
+
+  // false during the beta: no plan picker, everyone signs up as "beta" (gets premium).
+  // Set to true when paid plans are ready.
+  const SHOW_PLANS = false;
+
+  const API = "https://api.sleeper.app/v1";
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  const inviteLeague = params.get("league");
+
+  let season = String(new Date().getFullYear());
+  let user = null;
+  let leagues = [];
+
+  if (!SHOW_PLANS) {
+    $("planBlock").classList.add("hidden");
+    $("betaNote").classList.remove("hidden");
+  }
+
+  if (inviteLeague) {
+    $("inviteBanner").classList.remove("hidden");
+    $("planBlock").classList.add("hidden");
+    if (!SHOW_PLANS) {
+      $("inviteBanner").textContent =
+        "Someone in your league invited you. Find your league below (it's already checked) and add your email.";
+    }
+  }
+
+  function setMsg(el, text, kind) {
+    el.textContent = text || "";
+    el.className = "msg" + (kind ? " " + kind : "");
+  }
+
+  function leagueType(l) {
+    const t = l.settings && l.settings.type;
+    if (t === 2) return "Dynasty";
+    if (t === 1) return "Keeper";
+    return "Redraft";
+  }
+
+  async function getSeason() {
+    try {
+      const r = await fetch(API + "/state/nfl");
+      if (r.ok) {
+        const s = await r.json();
+        if (s && s.league_season) season = String(s.league_season);
+      }
+    } catch (e) { /* keep calendar year */ }
+  }
+
+  async function findLeagues() {
+    const name = $("username").value.trim();
+    const list = $("leagueList");
+    list.innerHTML = "";
+    $("nextWrap").classList.add("hidden");
+    $("step2").classList.add("hidden");
+    if (!name) { setMsg($("findMsg"), "Enter your Sleeper username.", "error"); return; }
+
+    $("findBtn").disabled = true;
+    setMsg($("findMsg"), "Looking you up...");
+    try {
+      await getSeason();
+      const ur = await fetch(API + "/user/" + encodeURIComponent(name));
+      user = ur.ok ? await ur.json() : null;
+      if (!user || !user.user_id) {
+        setMsg($("findMsg"), "No Sleeper account found with that username. Check the spelling (it's your username, not your display name).", "error");
+        return;
+      }
+
+      const lr = await fetch(API + "/user/" + user.user_id + "/leagues/nfl/" + season);
+      leagues = lr.ok ? (await lr.json()) || [] : [];
+      if (leagues.length === 0) {
+        setMsg($("findMsg"), "No " + season + " NFL leagues found for " + (user.display_name || name) + ".", "error");
+        return;
+      }
+
+      if (inviteLeague && !leagues.some((l) => l.league_id === inviteLeague)) {
+        setMsg($("findMsg"), "You're not in the league this invite is for. You can still pick any of your leagues below.", "error");
+      } else {
+        setMsg($("findMsg"), "Pick the leagues you want the newsletter for:");
+      }
+
+      leagues.forEach((l) => {
+        const row = document.createElement("label");
+        row.className = "league";
+        const img = l.avatar
+          ? '<img src="https://sleepercdn.com/avatars/thumbs/' + l.avatar + '" alt="">'
+          : '<div class="ph">' + (l.name || "?").charAt(0).toUpperCase() + "</div>";
+        row.innerHTML = '<input type="checkbox" value="' + l.league_id + '">' + img +
+          '<div><div class="name"></div><div class="meta">' +
+          l.total_rosters + " teams &middot; " + leagueType(l) + " &middot; " + season + "</div></div>";
+        row.querySelector(".name").textContent = l.name;
+        if (inviteLeague && l.league_id === inviteLeague) row.querySelector("input").checked = true;
+        list.appendChild(row);
+      });
+      $("nextWrap").classList.remove("hidden");
+    } catch (e) {
+      setMsg($("findMsg"), "Couldn't reach Sleeper right now. Try again in a minute.", "error");
+    } finally {
+      $("findBtn").disabled = false;
+    }
+  }
+
+  function selectedLeagues() {
+    const ids = Array.from(document.querySelectorAll("#leagueList input:checked")).map((x) => x.value);
+    return leagues.filter((l) => ids.includes(l.league_id));
+  }
+
+  function goStep2() {
+    const sel = selectedLeagues();
+    if (sel.length === 0) { setMsg($("findMsg"), "Pick at least one league.", "error"); return; }
+
+    const dyn = sel.filter((l) => leagueType(l) === "Dynasty");
+    const rules = $("rulesList");
+    rules.innerHTML = "";
+    dyn.forEach((l) => {
+      const div = document.createElement("div");
+      div.className = "rule";
+      div.innerHTML = '<div class="lname"></div>' +
+        '<select data-league="' + l.league_id + '">' +
+        '<option value="unknown">Not sure</option>' +
+        '<option value="worst_record">Worst record gets the 1.01</option>' +
+        '<option value="reverse_maxpf">Lowest Max PF among non-playoff teams</option>' +
+        '<option value="other">Something else (lottery, etc.)</option>' +
+        "</select>";
+      div.querySelector(".lname").textContent = l.name;
+      rules.appendChild(div);
+    });
+    $("rulesBlock").classList.toggle("hidden", dyn.length === 0);
+
+    $("step2").classList.remove("hidden");
+    setMsg($("submitMsg"), "");
+    $("step2").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  const validEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+
+  async function submit() {
+    const sel = selectedLeagues();
+    const name = $("contactName").value.trim();
+    const email = $("contactEmail").value.trim().toLowerCase();
+    if (!name) { setMsg($("submitMsg"), "Add your name.", "error"); return; }
+    if (!validEmail(email)) { setMsg($("submitMsg"), "Add a valid email.", "error"); return; }
+    if ($("confirmEmail").value.trim().toLowerCase() !== email) {
+      setMsg($("submitMsg"), "The two emails don't match.", "error"); return;
+    }
+
+    const plan = !SHOW_PLANS ? "beta"
+               : inviteLeague ? "premium"
+               : document.querySelector("input[name=plan]:checked").value;
+    const ruleFor = {};
+    document.querySelectorAll("#rulesList select").forEach((s) => { ruleFor[s.dataset.league] = s.value; });
+
+    const rows = sel.map((l) => ({
+      signed_up_at: new Date().toISOString(),
+      email: email,
+      name: name,
+      sleeper_username: user.username || $("username").value.trim(),
+      sleeper_user_id: user.user_id,
+      league_id: l.league_id,
+      league_name: l.name,
+      season: season,
+      total_rosters: l.total_rosters,
+      league_type: leagueType(l),
+      plan: plan,
+      via_invite: inviteLeague === l.league_id ? "yes" : "no",
+      draft_rule: leagueType(l) === "Dynasty" ? (ruleFor[l.league_id] || "unknown") : "none"
+    }));
+
+    $("submitBtn").disabled = true;
+    setMsg($("submitMsg"), "Saving...");
+    try {
+      if (SUBMIT_URL) {
+        await fetch(SUBMIT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ rows: rows })
+        });
+      } else {
+        console.log("Test mode, not saved:", rows);
+      }
+
+      $("step1").classList.add("hidden");
+      $("step2").classList.add("hidden");
+      $("inviteBanner").classList.add("hidden");
+      const names = sel.map((l) => l.name).join(", ");
+      $("doneText").textContent =
+        "Your first newsletter for " + names + " arrives next Tuesday at " + email + "." +
+        (SUBMIT_URL ? "" : " (Test mode: nothing was saved.)");
+
+      if (plan === "league" || !SHOW_PLANS) {
+        if (!SHOW_PLANS) {
+          $("shareIntro").innerHTML =
+            "<b>Invite your league.</b> Drop this link in your league chat so everyone can sign up with their own email.";
+        }
+        const base = location.href.split("?")[0];
+        const links = $("shareLinks");
+        links.innerHTML = "";
+        sel.forEach((l) => {
+          const wrap = document.createElement("div");
+          wrap.innerHTML = '<div class="hint" style="margin-top:10px;"></div>' +
+            '<div class="share"><input type="text" readonly><button class="ghost">Copy</button></div>';
+          wrap.querySelector(".hint").textContent = l.name;
+          const inp = wrap.querySelector("input");
+          inp.value = base + "?league=" + l.league_id;
+          wrap.querySelector("button").addEventListener("click", async (ev) => {
+            try { await navigator.clipboard.writeText(inp.value); ev.target.textContent = "Copied"; }
+            catch (e) { inp.select(); }
+          });
+          links.appendChild(wrap);
+        });
+        $("shareBlock").classList.remove("hidden");
+      }
+      $("doneCard").classList.remove("hidden");
+    } catch (e) {
+      setMsg($("submitMsg"), "Something went wrong saving your sign-up. Try again.", "error");
+    } finally {
+      $("submitBtn").disabled = false;
+    }
+  }
+
+  $("findBtn").addEventListener("click", findLeagues);
+  $("username").addEventListener("keydown", (e) => { if (e.key === "Enter") findLeagues(); });
+  $("nextBtn").addEventListener("click", goStep2);
+  $("backBtn").addEventListener("click", () => {
+    $("step2").classList.add("hidden");
+    $("step1").scrollIntoView({ behavior: "smooth" });
+  });
+  $("submitBtn").addEventListener("click", submit);
+</script>
+</body>
+</html>
